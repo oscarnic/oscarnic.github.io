@@ -8,16 +8,31 @@
     <!-- Fonts -->
     <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* ===== Base Styles ===== */
+        /* ===== CSS Variables ===== */
         :root {
-            --primary: #ffffff;
-            --secondary: #cccccc;
-            --accent: #6f6b6b;
-            --bg: #000000;
-            --card-bg: rgba(255, 255, 255, 0.1);
+            --bg: #fafafa;
+            --text: #111;
+            --muted: #777;
+            --border: #e5e5e5;
+            --accent: #4a6fa5;
+            --card-bg: #fff;
+            --shadow: rgba(0, 0, 0, 0.05);
+            --transition: all 0.3s ease;
         }
 
+        [data-theme="dark"] {
+            --bg: #121212;
+            --text: #f0f0f0;
+            --muted: #aaa;
+            --border: #333;
+            --accent: #6b9bd2;
+            --card-bg: #1e1e1e;
+            --shadow: rgba(0, 0, 0, 0.2);
+        }
+
+        /* ===== Base Styles ===== */
         * {
             margin: 0;
             padding: 0;
@@ -27,10 +42,11 @@
 
         body {
             background: var(--bg);
-            color: var(--primary);
-            font-family: 'Montserrat', sans-serif;
-            line-height: 1.6;
-            overflow-x: hidden;
+            color: var(--text);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.7;
+            transition: var(--transition);
+            min-height: 100vh;
         }
 
         html {
@@ -38,597 +54,1244 @@
         }
 
         a {
-            color: var(--primary);
-            text-decoration: none;
-            transition: all 0.2s ease;
-        }
-
-        /* ===== Typography ===== */
-        .small-title {
-            font-weight: 600;
             color: var(--accent);
-            margin-bottom: 1rem;
-            font-size: 1.1rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            text-decoration: none;
+            transition: var(--transition);
         }
 
-        .title {
-            font-size: 72px;
+        /* ===== Header ===== */
+        .modern-header {
+            max-width: 900px;
+            margin: 4rem auto 0;
+            padding: 0 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .site-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+        }
+
+        .main-nav {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .main-nav a {
+            color: var(--muted);
+            font-size: 0.95rem;
+            position: relative;
+            padding: 0.25rem 0;
+        }
+
+        .main-nav a:hover {
+            color: var(--text);
+        }
+
+        .main-nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: width 0.3s ease;
+        }
+
+        .main-nav a:hover::after {
+            width: 100%;
+        }
+
+        /* Theme Toggle */
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: var(--muted);
+            font-size: 1.1rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 4px;
+            transition: var(--transition);
+        }
+
+        .theme-toggle:hover {
+            color: var(--text);
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+
+        [data-theme="dark"] .theme-toggle:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .theme-toggle .fa-sun {
+            display: none;
+        }
+
+        [data-theme="dark"] .theme-toggle .fa-moon {
+            display: none;
+        }
+
+        [data-theme="dark"] .theme-toggle .fa-sun {
+            display: block;
+        }
+
+        /* ===== Hero Section ===== */
+        .hero {
+            max-width: 900px;
+            margin: 6rem auto 8rem;
+            padding: 0 1.5rem;
+            text-align: center;
+        }
+
+        .profile-img-container {
+            width: 140px;
+            height: 140px;
+            margin: 0 auto 2rem;
+            position: relative;
+        }
+
+        .profile-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--border);
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
             font-weight: 700;
-            text-transform: uppercase;
-            line-height: 1.1;
-            margin: 0.5rem 0;
+            margin-bottom: 0.5rem;
+            letter-spacing: -1px;
+        }
+
+        .hero-tagline {
+            font-size: 1.1rem;
+            color: var(--muted);
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-links {
+            display: flex;
+            gap: 1.5rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        .hero-link {
+            padding: 0.75rem 1.5rem;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 0.95rem;
+            transition: var(--transition);
+        }
+
+        .hero-link:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        /* ===== Sections ===== */
+        .section {
+            max-width: 900px;
+            margin: 0 auto 6rem;
+            padding: 0 1.5rem;
         }
 
         .section-title {
-            font-size: 2.5rem;
-            margin-bottom: 2rem;
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 2.5rem;
             position: relative;
             display: inline-block;
         }
 
         .section-title::after {
-            content: "";
+            content: '';
             position: absolute;
-            bottom: -10px;
+            bottom: -8px;
             left: 0;
-            width: 50%;
+            width: 50px;
             height: 3px;
-            background: var(--primary);
+            background: var(--accent);
         }
 
-        /* Header link styles (Your original) */
-        .content-links {
-            margin-top: 1rem;
-        }
-
-        .content-links a {
-            border-bottom: 1px dotted #ccc;
-            font-weight: bold;
-            transition: color 0.3s ease;
-        }
-
-        .content-links a:hover {
-            color: #ccc;
-        }
-
-        .dollar {
-            color: #000000;
-        }
-
-        /* ===== Layout Components ===== */
-        /* Header (Your original style) */
-        .header-section {
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            z-index: 1;
-            padding: 0 20px;
-            flex-direction: column;
-        }
-
-        .header-content {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 40px;
-            max-width: 1000px;
-            width: 100%;
-        }
-
-        .header-text {
-            text-align: left;
-        }
-
-        .profile-img {
-            width: 200px;
-            height: 200px;
-            border-radius: 50%;
-            object-fit: cover;
-            margin-bottom: 10px;
-            border: 3px solid rgba(255, 255, 255, 0.1);
-        }
-
-        /* Navigation (Improved version) */
-        .navigation {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(10px);
-            z-index: 1000;
-            padding: 1.5rem 0;
-        }
-
-        .navigation ul {
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            list-style: none;
-            margin: 0;
-            padding: 0;
-        }
-
-        .navigation a {
-            font-weight: 600;
-            padding: 0.5rem 1rem;
-            border-radius: 4px;
-            font-size: 1rem;
-            white-space: nowrap; /* Prevent text wrapping */
-        }
-
-        .navigation a:hover {
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        /* Sections */
-        .section {
-            padding: 5rem 2rem;
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
-        .section p {
+        .section-content {
             font-size: 1.1rem;
-            line-height: 1.7;
+            line-height: 1.8;
+            color: var(--text);
+        }
+
+        .section-content p {
             margin-bottom: 1.5rem;
         }
 
-        /* Project Grid (3 columns desktop, 1 column mobile) */
-        .project-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1.5rem;
+        .highlight-list {
+            margin: 2rem 0;
+            padding-left: 1.5rem;
+        }
+
+        .highlight-list li {
+            margin-bottom: 0.75rem;
+            color: var(--text);
+        }
+
+        /* ===== Updated Project Items with Images ===== */
+        .project-list {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
             margin-top: 2rem;
         }
 
         .project-item {
             background: var(--card-bg);
-            border-radius: 10px;
-            padding: 1.5rem;
-            transition: transform 0.3s ease;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 0;
+            transition: var(--transition);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
         }
 
         .project-item:hover {
-            transform: translateY(-5px);
+            border-color: var(--accent);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px var(--shadow);
         }
 
-        .project-item img {
+        .project-image-container {
             width: 100%;
-            border-radius: 8px;
-            margin-bottom: 1rem;
-            aspect-ratio: 16/9;
+            height: 200px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .project-image {
+            width: 100%;
+            height: 100%;
             object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .project-item:hover .project-image {
+            transform: scale(1.05);
+        }
+
+        .project-content {
+            padding: 1.5rem;
+        }
+
+        .project-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.5rem;
         }
 
         .project-item h3 {
             font-size: 1.3rem;
+            font-weight: 600;
             margin-bottom: 0.5rem;
+        }
+
+        .project-status {
+            font-size: 0.85rem;
+            color: var(--accent);
+            font-weight: 500;
+            padding: 0.25rem 0.75rem;
+            background: rgba(74, 111, 165, 0.1);
+            border-radius: 20px;
+        }
+
+        .project-date {
+            font-size: 0.9rem;
+            color: var(--muted);
+            margin-bottom: 1rem;
+        }
+
+        .project-preview {
+            font-size: 0.95rem;
+            color: var(--muted);
+            line-height: 1.6;
+            margin-bottom: 1rem;
         }
 
         .project-tags {
             display: flex;
             flex-wrap: wrap;
             gap: 0.5rem;
-            margin: 0.8rem 0;
+            margin-bottom: 1rem;
         }
 
         .tag {
-            background: rgba(255, 255, 255, 0.1);
             padding: 0.3rem 0.8rem;
+            background: var(--shadow);
+            color: var(--muted);
             border-radius: 20px;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
         }
 
-        /* Footer (Your original style) */
-        .footer {
-            margin-bottom: 4rem;
-            font-family: 'Inter', sans-serif;
-        }
-
-        .footer-container {
+        .project-actions {
             display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            text-align: center;
-            gap: 50px;
+            gap: 1rem;
+            margin-top: 1rem;
         }
 
-        .menu {
-            text-align: left;
-        }
-
-        .menu ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .menu ul li {
-            margin-bottom: 6px;
-        }
-
-        .menu ul li:not(:first-child) {
-            margin-bottom: 12px;
-        }
-
-        .footer a {
+        .project-link, .project-details-btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-size: 0.85rem;
+            transition: var(--transition);
+            cursor: pointer;
+            background: none;
+            color: var(--text);
             text-decoration: none;
-            color: white;
-            font-weight: 400;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
         }
 
-        .footer a.bold {
-            font-weight: 600;
+        .project-link:hover, .project-details-btn:hover {
+            border-color: var(--accent);
+            background-color: var(--shadow);
         }
 
-        .inline-img {
-            height: 1em;
-            vertical-align: middle;
-        }
-
-        .footer-link {
-            border-bottom: 2px solid #bbb;
-            transition: border-color 0.3s ease;
-        }
-
-        .footer-link:hover {
-            border-bottom: 2px solid white;
-        }
-
-        /* Colophon Popup (Your original style) */
-        #colophonPopup {
+        /* ===== Project Popup Modal ===== */
+        .project-popup {
             display: none;
             position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(123, 123, 123, 0.9);
-            color: white;
-            padding: 20px;
-            border-radius: 10px;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
             z-index: 1000;
-            max-width: 500px;
-            min-width: 300px;
-            text-align: left;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
         }
 
-        #colophonPopup button {
-            border-radius: 25px;
-            padding: 12px 24px;
-            background-color: #fff;
-            color: black;
-            font-size: 16px;
+        .project-popup.active {
+            display: flex;
+        }
+
+        .popup-content {
+            background: var(--card-bg);
+            border-radius: 12px;
+            width: 100%;
+            max-width: 700px;
+            max-height: 90vh;
+            overflow-y: auto;
+            border: 1px solid var(--border);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            animation: popupFadeIn 0.3s ease;
+        }
+
+        @keyframes popupFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .popup-header {
+            padding: 1.5rem 1.5rem 0.5rem;
+            border-bottom: 1px solid var(--border);
+            position: relative;
+        }
+
+        .popup-header h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .popup-subtitle {
+            font-size: 0.9rem;
+            color: var(--muted);
+            margin-bottom: 1rem;
+        }
+
+        .close-popup {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            background: none;
             border: none;
+            color: var(--muted);
+            font-size: 1.2rem;
             cursor: pointer;
-            transition: background-color 0.3s, transform 0.3s;
+            transition: var(--transition);
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
         }
 
-        #colophonPopup button:hover {
-            background-color: #f0f0f0;
-            transform: scale(1.05);
+        .close-popup:hover {
+            background: var(--shadow);
+            color: var(--text);
         }
 
-        /* ===== Mobile Styles ===== */
+        .popup-body {
+            padding: 1.5rem;
+        }
+
+        .popup-image {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+        }
+
+        .popup-body p {
+            margin-bottom: 1.5rem;
+            line-height: 1.7;
+        }
+
+        .popup-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .popup-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.5rem;
+            background: var(--accent);
+            color: white;
+            border-radius: 6px;
+            font-weight: 500;
+            margin-top: 1rem;
+        }
+
+        .popup-link:hover {
+            background: var(--accent);
+            opacity: 0.9;
+            color: white;
+        }
+
+        /* ===== Future Projects Grid ===== */
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        /* Tablet (2 columns) */
+        @media (max-width: 900px) {
+            .project-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* Mobile (1 column) */
+        @media (max-width: 600px) {
+            .project-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .project-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 0;
+            transition: var(--transition);
+            border: 1px solid var(--border);
+            overflow: hidden;
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px var(--shadow);
+            border-color: var(--accent);
+        }
+
+        .project-card-image {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+
+        .project-card-content {
+            padding: 1.5rem;
+        }
+
+        .project-card h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        /* ===== Footer ===== */
+        .modern-footer {
+            max-width: 900px;
+            margin: 8rem auto 4rem;
+            padding: 0 1.5rem;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-column h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 1.25rem;
+            color: var(--text);
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-links a {
+            color: var(--muted);
+            font-size: 0.95rem;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent);
+        }
+
+        .footer-bottom {
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+            color: var(--muted);
+        }
+
+        .carbon-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: var(--shadow);
+            border-radius: 6px;
+            font-size: 0.85rem;
+        }
+
+        /* ===== Responsive ===== */
         @media (max-width: 768px) {
-            .header-content {
+            .modern-header {
+                margin-top: 2rem;
                 flex-direction: column;
-                gap: 20px;
-            }
-            
-            .header-text {
-                text-align: center;
+                gap: 1.5rem;
+                align-items: flex-start;
             }
 
-            .title {
-                font-size: 48px;
-            }
-            
-            .small-title {
-                font-size: 16px;
+            .hero {
+                margin: 4rem auto;
             }
 
-            .footer-container {
-                gap: 20px;
-                padding: 0 10px;
-            }
-
-            /* Only change the gap between navigation items */
-            .navigation ul {
-                gap: 0.8rem; /* Reduced from 2rem */
-                padding: 0 10px;
-            }
-
-            /* Keep original font size and padding */
-            .navigation a {
-                font-size: 16px; /* Original size */
-                padding: 8px 16px; /* Original padding */
-            }
-
-            .header-section {
-                padding: 0 10px;
+            .hero h1 {
+                font-size: 2.5rem;
             }
 
             .section {
-                padding: 60px 10px;
-                max-width: 90%;
+                margin-bottom: 4rem;
             }
 
-            .section-title {
-                font-size: 2rem;
+            .project-header {
+                flex-direction: column;
+                gap: 0.5rem;
+                align-items: flex-start;
             }
 
-            /* Mobile project grid (1 column) */
-            .project-grid {
+            .project-actions {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .footer-grid {
                 grid-template-columns: 1fr;
-                max-width: 400px;
-                margin-left: auto;
-                margin-right: auto;
+                gap: 2rem;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
             }
         }
 
-        /* Additional adjustment for very small screens */
         @media (max-width: 480px) {
-            .navigation ul {
-                gap: 0.5rem; /* Even tighter on very small screens */
+            .hero h1 {
+                font-size: 2rem;
             }
-            
-            .title {
-                font-size: 42px;
+
+            .hero-links {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .main-nav {
+                flex-wrap: wrap;
+                gap: 1rem;
+            }
+
+            .popup-content {
+                margin: 1rem;
+                max-height: 80vh;
+            }
+
+            .project-image-container {
+                height: 160px;
             }
         }
     </style>
 </head>
-<body>
-    <!-- Navigation (Improved) -->
-    <nav class="navigation">
-        <ul>
-            <li><a href="#header">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#projects">Projects</a></li>
-            <li><a href="#footer">Contact</a></li>
-        </ul>
-    </nav>
+<body data-theme="dark">
+    <!-- Modern Header -->
+    <header class="modern-header">
+        <div class="header-left">
+            <h1 class="site-title">Oscar Nicholas</h1>
+            <nav class="main-nav">
+                <a href="#about">About</a>
+                <a href="#past-projects">Projects</a>
+                <a href="#contact">Contact</a>
+            </nav>
+        </div>
+        <button class="theme-toggle" id="theme-toggle">
+            <i class="fas fa-moon"></i>
+            <i class="fas fa-sun"></i>
+        </button>
+    </header>
 
-    <!-- Header (Your original version with GitHub link restored) -->
-    <section id="header" class="header-section">
-        <div class="header-content">
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="profile-img-container">
             <img src="assets/profile.jpg" alt="Oscar Nicholas" class="profile-img" loading="lazy">
-            <div class="header-text">
-                <div class="small-title">THE PORTFOLIO OF</div>
-                <div class="title">OSCAR</div>
-                <div class="title">NICHOLAS</div>
-                <ul class="content-links"> </br>
-                    <li class="dollar"> <a href="https://github.com/incogweb">Click here to visit my GitHub</a> <span class="typing">|</span></li>
-                </ul>
-            </div>
+        </div>
+        <h1>Building Ideas into Reality</h1>
+        <p class="hero-tagline">
+            Teenage developer passionate about e-commerce, coding, and design. 
+            Creating intuitive applications and exploring the intersection of technology and creativity.
+        </p>
+        <div class="hero-links">
+            <a href="https://github.com/oscarnic" target="_blank" class="hero-link">
+                <i class="fab fa-github"></i> GitHub
+            </a>
+            <a href="#past-projects" class="hero-link">View Projects</a>
         </div>
     </section>
 
-    <!-- About (Improved layout) -->
+    <!-- About Section -->
     <section id="about" class="section">
         <h2 class="section-title">About Me</h2>
-        <p><strong>Hello, I'm Oscar.</strong> I'm a teenager passionate about <strong>ecommerce, coding, and graphic design</strong>—ways to bring my ideas to life. Since childhood, I've envisioned apps and businesses, and I've pursued skills to build them.</p>
-        <p>When I was 11, I built a website using HTML, CSS, and JS loaded with different games for my classmates to play. The games only appeared when holding down the Z key on our school laptops so that if you released it, the screen would switch to a random article - making it looked like you were doing work in class. The website required a password to enter, and so I would charge my classmates a coin for a 'lisence' to use the website. <strong>Needless to say it was a success - and the beginning of my realisation that there were real people who wanted what I made.</strong></p>
-        <p><strong>Today, I focus on:</strong></p>
-        <ul style="margin: 1.5rem 0; padding-left: 2rem;">
-            <li>Studying e-commerce & economics</li>
-            <li>Building UI/UX-friendly applications</li>
-            <li>IoT/Robotics (Raspberry Pi, Arduino)</li>
-            <li>Cybersecurity research</li>
-            <li>Freelance graphic design</li>
-        </ul>
+        <div class="section-content">
+            <p>
+                <strong>Hello, I'm Oscar.</strong> I'm a teenager passionate about <strong>ecommerce, coding, and graphic design</strong>—ways to bring my ideas to life. 
+                Since childhood, I've envisioned apps and businesses, and I've pursued skills to build them.
+            </p>
+            <p>
+                When I was 11, I built a website using HTML, CSS, and JS loaded with different games for my classmates to play. 
+                The games only appeared when holding down the Z key on our school laptops so that if you released it, the screen would switch to a random article - 
+                making it looked like you were doing work in class. The website required a password to enter, and so I would charge my classmates a coin for a 'license' to use the website.
+            </p>
+            <p>
+                <strong>Needless to say it was a success - and the beginning of my realisation that there were real people who wanted what I made.</strong>
+            </p>
+            <p><strong>Today, I focus on:</strong></p>
+            <ul class="highlight-list">
+                <li>Studying e-commerce & economics</li>
+                <li>Building UI/UX-friendly applications</li>
+                <li>IoT/Robotics (Raspberry Pi, Arduino)</li>
+                <li>Cybersecurity research</li>
+                <li>Freelance graphic design</li>
+            </ul>
+        </div>
     </section>
 
-    <!-- Past Projects -->
-    <section id="projects" class="section">
+    <!-- Past Projects (Vertical List with Images) -->
+    <section id="past-projects" class="section">
         <h2 class="section-title">Past Projects</h2>
-        <div class="project-grid">
-            <div class="project-item">
-                <img src="assets/ios.png" alt="iOS App" loading="lazy">
-                <h3>iOS App Development</h3>
-                <div class="project-tags">
-                    <span class="tag">Swift</span>
-                    <span class="tag">Xcode</span>
+        <div class="project-list">
+            <!-- iOS App -->
+            <div class="project-item" data-project="ios-app">
+                <div class="project-image-container">
+                    <img src="assets/ios.png" alt="iOS App Screenshot" class="project-image" loading="lazy">
                 </div>
-                <p>A productivity app with custom animations and local storage.</p>
-                <a href="#" class="footer-link">Coming Soon →</a>
+                <div class="project-content">
+                    <div class="project-header">
+                        <h3>iOS App Development</h3>
+                        <span class="project-status">Completed</span>
+                    </div>
+                    <div class="project-date">November, 2024</div>
+                    <p class="project-preview">A reflection/productivity app with custom animations and local storage designed to help clients create a feed of their own memories.</p>
+                    <div class="project-tags">
+                        <span class="tag">Swift</span>
+                        <span class="tag">Xcode</span>
+                        <span class="tag">Core Data</span>
+                    </div>
+                    <div class="project-actions">
+                        <button class="project-details-btn" onclick="openProjectPopup('ios-app')">
+                            <i class="fas fa-info-circle"></i> View Details
+                        </button>
+                    </div>
+                </div>
             </div>
-            <div class="project-item">
-                <img src="assets/spree.png" alt="E-Reading App" loading="lazy">
-                <h3>E-Reading Web App</h3>
-                <div class="project-tags">
-                    <span class="tag">JavaScript</span>
-                    <span class="tag">Service</span>
+
+            <!-- E-Reading App -->
+            <div class="project-item" data-project="ereading-app">
+                <div class="project-image-container">
+                    <img src="assets/spree.png" alt="E-Reading App Interface" class="project-image" loading="lazy">
                 </div>
-                <p>Web app that speeds up reading with customizable speeds.</p>
-                <a href="https://incogweb.github.io/spree/" target="_blank" class="footer-link">Try Demo →</a>
+                <div class="project-content">
+                    <div class="project-header">
+                        <h3>E-Reading Web App</h3>
+                        <span class="project-status">Live</span>
+                    </div>
+                    <div class="project-date">April, 2025</div>
+                    <p class="project-preview">Web app that speeds up reading using Rapid Serial Visual Presentation, customizable speeds and text highlighting features.</p>
+                    <div class="project-tags">
+                        <span class="tag">JavaScript</span>
+                        <span class="tag">Service Workers</span>
+                        <span class="tag">PWA</span>
+                    </div>
+                    <div class="project-actions">
+                        <a href="https://oscarnic.github.io/spree/" target="_blank" class="project-link">
+                            <i class="fas fa-external-link-alt"></i> Try Demo
+                        </a>
+                        <button class="project-details-btn" onclick="openProjectPopup('ereading-app')">
+                            <i class="fas fa-info-circle"></i> View Details
+                        </button>
+                    </div>
+                </div>
             </div>
-            <div class="project-item">
-                <img src="assets/graphic.png" alt="Design Work" loading="lazy">
-                <h3>Graphic Design</h3>
-                <div class="project-tags">
-                    <span class="tag">Figma</span>
-                    <span class="tag">Canva</span>
+
+            <!-- Graphic Design -->
+            <div class="project-item" data-project="graphic-design">
+                <div class="project-image-container">
+                    <img src="assets/graphic.png" alt="Graphic Design Examples" class="project-image" loading="lazy">
                 </div>
-                <p>Logos and ads for student-run businesses.</p>
-                <a href="#" class="footer-link">Coming Soon →</a>
+                <div class="project-content">
+                    <div class="project-header">
+                        <h3>Graphic Design</h3>
+                        <span class="project-status">Ongoing</span>
+                    </div>
+                    <div class="project-date">2022-Present</div>
+                    <p class="project-preview">Logos, branding, and promotional materials for student-run businesses and local startups.</p>
+                    <div class="project-tags">
+                        <span class="tag">Figma</span>
+                        <span class="tag">Adobe Suite</span>
+                        <span class="tag">Canva</span>
+                    </div>
+                    <div class="project-actions">
+                        <button class="project-details-btn" onclick="openProjectPopup('graphic-design')">
+                            <i class="fas fa-info-circle"></i> View Details
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- Current Projects -->
+    <!-- Current Projects (Vertical List with Images) -->
     <section class="section">
         <h2 class="section-title">Current Projects</h2>
-        <div class="project-grid">
-            <div class="project-item">
-                <img src="assets/server.png" alt="Self-Hosted" loading="lazy">
-                <h3>Self-Hosted Services</h3>
-                <div class="project-tags">
-                    <span class="tag">Raspberry Pi</span>
-                    <span class="tag">Docker</span>
+        <div class="project-list">
+            <!-- Self-Hosted Services -->
+            <div class="project-item" data-project="self-hosted">
+                <div class="project-image-container">
+                    <img src="assets/server.png" alt="Raspberry Pi Server Setup" class="project-image" loading="lazy">
                 </div>
-                <p>Hosting web apps and Discord bots on home servers.</p>
-                <a href="#" class="footer-link">Coming Soon →</a>
+                <div class="project-content">
+                    <div class="project-header">
+                        <h3>Self-Hosted Server/Services</h3>
+                        <span class="project-status">Live</span>
+                    </div>
+                    <div class="project-date">January, 2026</div>
+                    <p class="project-preview">Hosting web apps, personal streaming services, database backups, Home Assistant, and more using a Raspberry Pi, Hardrive, and Docker containers.</p>
+                    <div class="project-tags">
+                        <span class="tag">Raspberry Pi</span>
+                        <span class="tag">Docker</span>
+                        <span class="tag">Linux</span>
+                    </div>
+                    <div class="project-actions">
+                        <button class="project-details-btn" onclick="openProjectPopup('self-hosted')">
+                            <i class="fas fa-info-circle"></i> View Details
+                        </button>
+                    </div>
+                </div>
             </div>
-            <div class="project-item">
-                <img src="assets/cyberdeck.png" alt="Cyberdeck" loading="lazy">
-                <h3>Private Cyberdeck</h3>
-                <div class="project-tags">
-                    <span class="tag">Raspberry Pi</span>
-                    <span class="tag">3D Printing</span>
+
+            <!-- Private Cyberdeck -->
+            <div class="project-item" data-project="cyberdeck">
+                <div class="project-image-container">
+                    <img src="assets/cyberdeck.png" alt="Cyberdeck Build" class="project-image" loading="lazy">
                 </div>
-                <p>Portable privacy-focused workstation in a toolbox.</p>
-                <a href="#" class="footer-link">Coming Soon →</a>
+                <div class="project-content">
+                    <div class="project-header">
+                        <h3>Private Cyberdeck</h3>
+                        <span class="project-status">Completed</span>
+                    </div>
+                    <div class="project-date">March, 2025</div>
+                    <p class="project-preview">Portable privacy-focused workstation built inside a rugged toolbox with components.</p>
+                    <div class="project-tags">
+                        <span class="tag">Raspberry Pi</span>
+                        <span class="tag">Hardware</span>
+                        <span class="tag">Privacy</span>
+                    </div>
+                    <div class="project-actions">
+                        <button class="project-details-btn" onclick="openProjectPopup('cyberdeck')">
+                            <i class="fas fa-info-circle"></i> View Details
+                        </button>
+                    </div>
+                </div>
             </div>
-            <div class="project-item">
-                <img src="assets/iot.png" alt="IoT Security" loading="lazy">
-                <h3>IoT Security</h3>
-                <div class="project-tags">
-                    <span class="tag">M5StickC</span>
-                    <span class="tag">Python</span>
+
+            <!-- IoT Security -->
+            <div class="project-item" data-project="iot-security">
+                <div class="project-image-container">
+                    <img src="assets/iot.png" alt="IoT Security Testing" class="project-image" loading="lazy">
                 </div>
-                <p>Testing device vulnerabilities and secure protocols.</p>
-                <a href="#" class="footer-link">Coming Soon →</a>
+                <div class="project-content">
+                    <div class="project-header">
+                        <h3>IoT Security</h3>
+                        <span class="project-status">Testing Phase</span>
+                    </div>
+                    <div class="project-date">April, 2025</div>
+                    <p class="project-preview">Testing device vulnerabilities and developing secure protocols for IoT networks.</p>
+                    <div class="project-tags">
+                        <span class="tag">M5StickC</span>
+                        <span class="tag">Python</span>
+                        <span class="tag">Security</span>
+                    </div>
+                    <div class="project-actions">
+                        <button class="project-details-btn" onclick="openProjectPopup('iot-security')">
+                            <i class="fas fa-info-circle"></i> View Details
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- Future Projects (Restored from your original) -->
-    <section id="future-projects" class="section">
+    <!-- Future Projects (Grid Layout) -->
+    <section class="section">
         <h2 class="section-title">Future Projects</h2>
         <div class="project-grid">
-            <div class="project-item">
-                <img src="assets/ai.png" alt="Automations" loading="lazy">
-                <h3>AI-Powered Automation</h3>
-                <div class="project-tags">
-                    <span class="tag">AI</span>
-                    <span class="tag">Python</span>
+            <div class="project-card">
+                <img src="assets/ai.png" alt="AI Automation" class="project-card-image" loading="lazy">
+                <div class="project-card-content">
+                    <h3>AI-Powered Automation</h3>
+                    <div class="project-tags">
+                        <span class="tag">AI</span>
+                        <span class="tag">Python</span>
+                    </div>
+                    <p>Planning to integrate AI for automating various personal and professional tasks.</p>
+                    <a href="#" class="project-link">Coming Soon →</a>
                 </div>
-                <p>Planning to integrate AI for automating various personal and professional tasks.</p>
-                <a href="#" class="footer-link">Coming Soon →</a>
             </div>
-            <div class="project-item">
-                <img src="assets/robot.png" alt="Robotics" loading="lazy">
-                <h3>Advanced Robotics</h3>
-                <div class="project-tags">
-                    <span class="tag">Raspberry Pi</span>
-                    <span class="tag">Arduino</span>
+            <div class="project-card">
+                <img src="assets/robot.png" alt="Robotics" class="project-card-image" loading="lazy">
+                <div class="project-card-content">
+                    <h3>Advanced Robotics</h3>
+                    <div class="project-tags">
+                        <span class="tag">Raspberry Pi</span>
+                        <span class="tag">Arduino</span>
+                    </div>
+                    <p>Exploring robotics with Raspberry Pi and Arduino for custom-built solutions.</p>
+                    <a href="#" class="project-link">Coming Soon →</a>
                 </div>
-                <p>Exploring robotics with Raspberry Pi and Arduino for custom-built solutions.</p>
-                <a href="#" class="footer-link">Coming Soon →</a>
             </div>
-            <div class="project-item">
-                <img src="assets/decen.png" alt="Decentralization" loading="lazy">
-                <h3>Decentralized Web Projects</h3>
-                <div class="project-tags">
-                    <span class="tag">Web3</span>
-                    <span class="tag">Blockchain</span>
+            <div class="project-card">
+                <img src="assets/decen.png" alt="Decentralized Web" class="project-card-image" loading="lazy">
+                <div class="project-card-content">
+                    <h3>Decentralized Web Projects</h3>
+                    <div class="project-tags">
+                        <span class="tag">Web3</span>
+                        <span class="tag">Blockchain</span>
+                    </div>
+                    <p>Interested in creating self-sustaining, decentralized online applications.</p>
+                    <a href="#" class="project-link">Coming Soon →</a>
                 </div>
-                <p>Interested in creating self-sustaining, decentralized online applications.</p>
-                <a href="#" class="footer-link">Coming Soon →</a>
             </div>
         </div>
     </section>
 
-    <!-- Footer (Your original version) -->
-    <footer id="footer" class="footer">
-        <div class="footer-container">
-            <nav class="menu">
-                <ul>
-                    <li style="margin-bottom: 1rem;"><a href="https://incogweb.github.io" style="border-bottom: none;" class="bold">incogweb.github.io</a></li>
-                    <li> <a href="https://github.com/incogweb" target="blank" class="footer-link">Github</a> </li>
-                    <li> <a onclick="openColophonPopup()" class="footer-link">Colophon</a> </li>
-                    <li> <a href=""><br></a> </li>
-                    <li> <a class="footer-link" href="https://www.websitecarbon.com/website/incogweb-github-io/" target="blank">0.01 g CO2 per visit <img src="assets/post.svg" class="inline-img" alt="Blog post icon"></a></li>
-                </ul>   
-            </nav>
-    
-            <nav class="menu">
-                <ul>
-                    <li><p class="bold" style="margin-bottom: 1rem;"><strong>Connect</strong></p></li>
-                    <li><a href="https://instagram.com/oscarnlx" target="blank" class="footer-link">Instagram <img src="assets/post.svg" class="inline-img" alt="Link icon"></a></li>
-                    <li><a href="https://www.youtube.com/" target="blank" class="footer-link">YouTube <img src="assets/post.svg" class="inline-img" alt="Link icon"></a></li>
-                    <li><a href="https://read.cv/" target="blank" class="footer-link">read.cv <img src="assets/post.svg" class="inline-img" alt="Link icon"></a></li>
-                    <li><a href="https://literal.club/" target="blank" class="footer-link">Literal <img src="assets/post.svg" class="inline-img" alt="Link icon"></a></li>
+    <!-- Footer -->
+    <footer id="contact" class="modern-footer">
+        <div class="footer-grid">
+            <div class="footer-column">
+                <h4>Navigation</h4>
+                <ul class="footer-links">
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#past-projects">Projects</a></li>
+                    <li><a href="#" onclick="openColophonPopup()">Colophon</a></li>
                 </ul>
-            </nav>
-
-            <nav class="menu">
-                <ul>
-                    <li><p class="bold" style="margin-bottom: 1rem;"><strong>Explore</strong></p></li>
-                    <li><a href="#header" class="footer-link">Home</a></li>
-                    <li><a href="#about" class="footer-link">About</a></li>
-                    <li><a href="#projects" class="footer-link">Projects</a></li>
+            </div>
+            <div class="footer-column">
+                <h4>Connect</h4>
+                <ul class="footer-links">
+                    <li><a href="https://github.com/oscarnic" target="_blank">GitHub</a></li>
+                    <li><a href="https://instagram.com/oscarnlx" target="_blank">Instagram</a></li>
+                    <li><a href="https://www.youtube.com/" target="_blank">YouTube</a></li>
                 </ul>
-            </nav>
-        </div> 
+            </div>
+            <div class="footer-column">
+                <h4>Explore</h4>
+                <ul class="footer-links">
+                    <li><a href="https://read.cv/" target="_blank">read.cv</a></li>
+                    <li><a href="https://literal.club/" target="_blank">Literal</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span>© 2024 Oscar Nicholas</span>
+            <a href="https://www.websitecarbon.com/website/oscarnic-github-io/" target="_blank" class="carbon-badge">
+                <i class="fas fa-leaf"></i>
+                <span>0.01 g CO2 per visit</span>
+            </a>
+        </div>
     </footer>
-    
-    <!-- Colophon Popup (Your original version) -->
-    <div id="colophonPopup">
-        <p><strong>Colophon</strong></p></br>
-        <p>This website was made using <strong>HTML, CSS, and JS.</strong></p>
-        <p>Footer inspiration from <strong><a href="https://github.com/henribredt" target="blank" class="footer-link">Henri.</a></strong></p></br>
-        <p>Version 2.1</p></br>
-        <button onclick="closeColophonPopup()" style="margin-top: 10px; padding: 5px 10px; background: white; color: black; border: none; cursor: pointer;"><strong>Close</strong></button>
+
+    <!-- Project Popup Modals -->
+    <div id="project-popup" class="project-popup">
+        <div class="popup-content">
+            <div class="popup-header">
+                <button class="close-popup" onclick="closeProjectPopup()">
+                    <i class="fas fa-times"></i>
+                </button>
+                <h3 id="popup-title">Project Title</h3>
+                <div class="popup-subtitle">
+                    <span id="popup-date">2024</span> • 
+                    <span id="popup-status">In Development</span>
+                </div>
+            </div>
+            <div class="popup-body">
+                <img id="popup-image" src="" alt="Project Image" class="popup-image">
+                <div id="popup-description">
+                    <!-- Content will be inserted here -->
+                </div>
+                <div class="popup-tags" id="popup-tags">
+                    <!-- Tags will be inserted here -->
+                </div>
+                <a href="#" id="popup-link" class="popup-link" target="_blank">
+                    <i class="fas fa-external-link-alt"></i> View Project
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Colophon Popup -->
+    <div id="colophonPopup" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: var(--card-bg); color: var(--text); padding: 2rem; border-radius: 12px; z-index: 1000; max-width: 400px; width: 90%; border: 1px solid var(--border); box-shadow: 0 8px 32px rgba(0,0,0,0.1);">
+        <h3 style="margin-bottom: 1rem;">Colophon</h3>
+        <p style="margin-bottom: 1rem;">This website was made using <strong>HTML, CSS, and JavaScript</strong>.</p>
+        <p style="margin-bottom: 1rem;">Design inspiration from modern portfolio and journal layouts.</p>
+        <p style="margin-bottom: 1.5rem;">Version 4.1</p>
+        <button onclick="closeColophonPopup()" style="padding: 0.75rem 1.5rem; background: var(--accent); color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 500; transition: var(--transition);">
+            Close
+        </button>
     </div>
 
     <script>
+        // Project Data with Images
+        const projects = {
+            'ios-app': {
+                title: 'iOS App Development',
+                date: 'November, 2024',
+                status: 'Completed',
+                image: 'assets/ios.png',
+                description: `
+                    <p>Developed a productivity app specifically designed for students to manage their study sessions effectively. The app features:</p>
+                    <p><strong>Key Features:</strong></p>
+                    <ul style="margin: 1rem 0 1.5rem 1.5rem;">
+                        <li>Custom animations for task completion</li>
+                        <li>Local storage using Core Data</li>
+                        <li>Pomodoro timer integration</li>
+                        <li>Dark mode support</li>
+                        <li>Progress tracking with visual charts</li>
+                    </ul>
+                    <p><strong>Technologies Used:</strong> Swift 5, Xcode 15, Core Data, SwiftUI</p>
+                    <p>The app was designed with a focus on minimalism and user experience, reducing cognitive load while studying.</p>
+                `,
+                tags: ['Swift', 'Xcode', 'Core Data', 'SwiftUI', 'iOS'],
+                link: '#'
+            },
+            'ereading-app': {
+                title: 'E-Reading Web App',
+                date: 'April, 2025',
+                status: 'Live',
+                image: 'assets/spree.png',
+                description: `
+                    <p>A progressive web application designed to help users read faster using Rapid Serial Visual Presentation and more efficiently through customizable speed settings and text highlighting.</p>
+                    <p><strong>Key Features:</strong></p>
+                    <ul style="margin: 1rem 0 1.5rem 1.5rem;">
+                        <li>Adjustable reading speed (50-1000 words per minute)</li>
+                        <li>Text highlighting and focus mode</li>
+                        <li>Offline capability using service workers</li>
+                        <li>Customizable fonts and spacing</li>
+                        <li>Progress tracking and bookmarks</li>
+                    </ul>
+                `,
+                tags: ['JavaScript', 'Service Workers', 'PWA', 'CSS3', 'HTML5'],
+                link: 'https://oscarnic.github.io/spree/'
+            },
+            'graphic-design': {
+                title: 'Graphic Design',
+                date: '2022-Present',
+                status: 'Ongoing',
+                image: 'assets/graphic.png',
+                description: `
+                    <p>Providing graphic design services for student-run businesses, startups, and personal projects. Specializing in creating memorable brand identities and marketing materials.</p>
+                    <p><strong>Services Offered:</strong></p>
+                    <ul style="margin: 1rem 0 1.5rem 1.5rem;">
+                        <li>Logo design and brand identity</li>
+                        <li>Social media graphics and templates</li>
+                        <li>Presentation design and slide decks</li>
+                        <li>Print materials (business cards, flyers)</li>
+                        <li>UI/UX mockups and wireframes</li>
+                    </ul>
+                    <p><strong>Notable Projects:</strong> Designed branding for 3 student startups, created marketing materials for school events reaching 500+ students.</p>
+                `,
+                tags: ['Figma', 'Adobe Suite', 'Canva', 'Branding', 'UI/UX'],
+                link: '#'
+            },
+            'self-hosted': {
+                title: 'Self-Hosted Servers/Services',
+                date: 'Jan, 2026',
+                status: 'Live',
+                image: 'assets/server.png',
+                description: `
+                    <p>Building a personal server infrastructure using Raspberry Pi 4 and Docker to host various services locally, reducing reliance on third-party cloud services.</p>
+                    <p><strong>Current Services:</strong></p>
+                    <ul style="margin: 1rem 0 1.5rem 1.5rem;">
+                        <li>Personal cloud storage (OpenMediaVault)</li>
+                        <li>Home automation dashboard (Home Assistant)</li>
+                        <li>Media server (Jellyfin)</li>
+                        <li>Personal VPN (Tailscale)</li>
+                        <li>Network wide security + ad blocker (PiHole)</li>
+                    </ul>
+                    <p><strong>Tech Stack:</strong> Ubuntu Server, Docker Compose, Nginx reverse proxy, Let's Encrypt SSL certificates</p>
+                    <p>Focus on security, privacy, and learning DevOps practices through hands-on experience.</p>
+                `,
+                tags: ['Raspberry Pi', 'Docker', 'Linux', 'DevOps', 'Networking'],
+                link: '#'
+            },
+            'cyberdeck': {
+                title: 'Private Cyberdeck',
+                date: 'March, 2025',
+                status: 'Completed',
+                image: 'assets/cyberdeck.png',
+                description: `
+                    <p>Building a portable, privacy-focused workstation inside a rugged toolbox. The cyberdeck is designed for secure computing on-the-go and offline work.</p>
+                    <p><strong>Components:</strong></p>
+                    <ul style="margin: 1rem 0 1.5rem 1.5rem;">
+                        <li>Generic toolbox</li>
+                        <li>Raspberry Pi 4B</li>
+                        <li>7-inch touchscreen display</li>
+                        <li>Mechanical keyboard with custom keycaps</li>
+                        <li>20,000mah Power bank with solar charging capability</li>
+                        <li>External antennas for WiFi/Bluetooth</li>
+                        <li>Power switch (a modded usb c cable going from powerbank to switch to Pi)</li>
+                    </ul>
+                    <p><strong>Features:</strong> Fully encrypted storage, TOR routing capability, air-gapped mode for sensitive work, modular design for upgrades.</p>
+                `,
+                tags: ['Raspberry Pi', 'Hardware', 'Privacy', 'DIY'],
+                link: '#'
+            },
+            'iot-security': {
+                title: 'IoT Security',
+                date: 'April, 2025',
+                status: 'Research Phase',
+                image: 'assets/iot.png',
+                description: `
+                    <p>Researching and testing security vulnerabilities in IoT devices while developing secure communication protocols for home automation systems.</p>
+                    <p><strong>Research Focus:</strong></p>
+                    <ul style="margin: 1rem 0 1.5rem 1.5rem;">
+                        <li>Common vulnerabilities in consumer IoT devices</li>
+                        <li>Secure firmware update mechanisms</li>
+                        <li>Encrypted MQTT communication</li>
+                        <li>Device authentication protocols</li>
+                        <li>Network segmentation for IoT devices</li>
+                    </ul>
+                    <p><strong>Testing Equipment:</strong> M5StickC development boards, Raspberry Pi Pico W, various smart home devices for penetration testing.</p>
+                    <p>Goal is to publish findings and create educational content about IoT security best practices.</p>
+                `,
+                tags: ['M5StickC', 'Python', 'Security', 'IoT', 'Research'],
+                link: '#'
+            }
+        };
+
+        // Theme Toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        const currentTheme = localStorage.getItem('theme') || 'dark';
+        
+        document.body.setAttribute('data-theme', currentTheme);
+        
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = document.body.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            
+            document.body.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        });
+
+        // Project Popup Functions
+        function openProjectPopup(projectId) {
+            const project = projects[projectId];
+            if (!project) return;
+            
+            document.getElementById('popup-title').textContent = project.title;
+            document.getElementById('popup-date').textContent = project.date;
+            document.getElementById('popup-status').textContent = project.status;
+            document.getElementById('popup-image').src = project.image;
+            document.getElementById('popup-image').alt = project.title;
+            document.getElementById('popup-description').innerHTML = project.description;
+            
+            // Set tags
+            const tagsContainer = document.getElementById('popup-tags');
+            tagsContainer.innerHTML = '';
+            project.tags.forEach(tag => {
+                const tagElement = document.createElement('span');
+                tagElement.className = 'tag';
+                tagElement.textContent = tag;
+                tagsContainer.appendChild(tagElement);
+            });
+            
+            // Set link
+            const linkElement = document.getElementById('popup-link');
+            linkElement.href = project.link;
+            if (project.link === '#') {
+                linkElement.textContent = 'Coming Soon';
+                linkElement.innerHTML = '<i class="fas fa-clock"></i> Coming Soon';
+            } else {
+                linkElement.innerHTML = '<i class="fas fa-external-link-alt"></i> View Project';
+            }
+            
+            // Show popup
+            document.getElementById('project-popup').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeProjectPopup() {
+            document.getElementById('project-popup').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Close popup when clicking outside
+        document.getElementById('project-popup').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('project-popup')) {
+                closeProjectPopup();
+            }
+        });
+
+        // Close popup with Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && document.getElementById('project-popup').classList.contains('active')) {
+                closeProjectPopup();
+            }
+        });
+
         // Colophon Popup
         function openColophonPopup() {
-            document.getElementById("colophonPopup").style.display = "block";
+            document.getElementById('colophonPopup').style.display = 'block';
         }
+        
         function closeColophonPopup() {
-            document.getElementById("colophonPopup").style.display = "none";
+            document.getElementById('colophonPopup').style.display = 'none';
         }
 
-        // Header typing animation (Your original version)
-        (function(doc, win) {
-            if (!doc.querySelector) {
-                return alert('Your browser does not support querySelector.');
-            }
+        // Smooth scroll for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
 
-            var list = doc.querySelector('ul.content-links'),
-                all = list.children,
-                i = all.length,
-                html = [];
+        // Add click effect to project items
+        document.querySelectorAll('.project-item').forEach(item => {
+            item.addEventListener('click', (e) => {
+                // Only trigger if not clicking on buttons or links
+                if (!e.target.closest('button') && !e.target.closest('a')) {
+                    const projectId = item.getAttribute('data-project');
+                    openProjectPopup(projectId);
+                }
+            });
+        });
 
-            while (i--) {
-                html[i] = all[i].innerHTML;
-                all[i].innerHTML = '';
-            }
+        // Add subtle animation to project items on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
 
-            var animate = function(i) {
-                var me = all[i],
-                    add = 'dollar',
-                    c = 0, d = 0;
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
 
-                me.className = add;
-                list.style.marginTop = '-' + ((i + 1) * 25) / 2 + 'px';
+        // Apply initial styles and observe project items
+        document.querySelectorAll('.project-item').forEach(item => {
+            item.style.opacity = '0';
+            item.style.transform = 'translateY(20px)';
+            item.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            observer.observe(item);
+        });
 
-                var inty = setInterval(function() {
-                    me.innerHTML = html[i].substr(0, c) + '<span class="typing">|</span>';
-                    c++;
-
-                    if (html[i].length < c) {
-                        clearInterval(inty);
-                        i++;
-
-                        if (all[i]) {
-                            setTimeout(function() {
-                                me.innerHTML = html[i - 1];
-                                animate(i);
-                            }, 300);
-                        }
-                    }
-                }, 60);
-            };
-
-            animate(0);
-        })(document, window);
+        // Apply to future project cards too
+        document.querySelectorAll('.project-card').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            observer.observe(card);
+        });
     </script>
 </body>
 </html>
